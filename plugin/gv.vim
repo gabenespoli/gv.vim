@@ -133,10 +133,13 @@ function! s:syntax()
   syn match gvSha     /[a-f0-9]\{6,}/ contained
   syn match gvMessage /.* \ze(.\{-})$/ contained contains=gvTag,gvGitHub,gvJira nextgroup=gvAuthor
   syn match gvAuthor  /.*$/ contained
-  syn match gvMeta    /([^)]\+) / contained contains=gvTag nextgroup=gvMessage
-  syn match gvTag     /(tag:[^)]\+)/ contained
+  syn match gvMeta    /([^)]\+) / contained contains=gvTag,gvHead,gvOrigin,gvDelim nextgroup=gvMessage
+  syn match gvTag     /tag:[^,)]\+/ contained
   syn match gvGitHub  /\<#[0-9]\+\>/ contained
   syn match gvJira    /\<[A-Z]\+-[0-9]\+\>/ contained
+  syn match gvHead    /HEAD ->/ contained
+  syn match gvOrigin  /origin\/[^,)]\+/ contained
+  syn match gvDelim   /[,()]/ contained
   hi def link gvDate   Number
   hi def link gvSha    Identifier
   hi def link gvTag    Constant
@@ -144,6 +147,9 @@ function! s:syntax()
   hi def link gvJira   Label
   hi def link gvMeta   Conditional
   hi def link gvAuthor String
+  hi def link gvHead   gvMeta
+  hi def link gvOrigin gvMeta
+  hi def link gvDelim  Delimiter
 
   syn match gvAdded     "^\W*\zsA\t.*"
   syn match gvDeleted   "^\W*\zsD\t.*"
